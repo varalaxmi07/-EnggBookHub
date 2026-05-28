@@ -70,7 +70,7 @@ Ensure your device has these runtimes ready:
 ### 2. Grab the Workspace
 ```bash
 git clone https://github.com
-cd LibraryManagementSystem
+cd  EnggBookHub
 ```
 
 ### 3. Establish Local Secrets
