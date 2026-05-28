@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Manage Books</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background: #f4f7fa;
+    }
+
+    header {
+      background-color: #0e2f44;
+      padding: 22px 20px;
+      display: flex;
+      gap: 20px;
+    }
+
+    header a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    header a:hover {
+      text-decoration: underline;
+    }
+
+    .container {
+      padding: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    h2 {
+      color: #0e2f44;
+    }
+
+    form {
+      background: white;
+      max-width: 500px;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      flex: 1 1 45%;
+    }
+
+    label {
+      display: block;
+      margin: 12px 0 4px;
+      font-weight: bold;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    button {
+      background: #0e2f44;
+      color: white;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      margin-top: 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0056b3;
+    }
+
+    #message {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+
+    #book-list {
+      background: white;
+      flex: 1 1 45%;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+
+    th {
+      background: #f4f7fa;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="manage_users.html">Manage Users</a>
+    <a href="issue_return.html">Return Books</a>
+  </header>
+
+  <div class="container">
+    <form id="add-book-form">
+      <h2>Add a New Book</h2>
+
+      <label for="book_id">Book ID</label>
+      <input type="text" id="bookid" name="bookid" required>
+
+      <label for="title">Title</label>
+      <input type="text" id="title" required>
+
+      <label for="author">Author</label>
+      <input type="text" id="author" required>
+
+      <label for="quantity">Quantity</label>
+      <input type="number" id="quantity" required>
+
+      <label for="coverpage">Cover Image URL (optional)</label>
+      <input type="text" id="coverpage">
+      
+      <label for="department">Department:</label>
+      <select id="department" name="department" required>
+        <option value="">Select Department</option>
+        <option value="Computer Science">Computer Science</option>
+        <option value="Electronics">Electronics</option>
+        <option value="Mechanical">Mechanical</option>
+        <option value="Civil">Civil</option>
+        <option value="Electrical">Electrical</option>
+        <option value="AI & DS">AI & DS</option>
+      </select>
+
+      <button type="submit">Add Book</button>
+      <p id="message"></p>
+    </form>
+
+    <div id="book-list">
+      <h2>Available Books</h2>
+      <table id="available-books">
+        <thead>
+          <tr>
+            <th>Book ID</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>Quantity</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Books will be inserted here -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    // Function to fetch available books
+    async function fetchAvailableBooks() {
+      const response = await fetch('http://localhost:3000/api/books/available');
+      const books = await response.json();
+
+      const booksTableBody = document.querySelector('#available-books tbody');
+      booksTableBody.innerHTML = ''; // Clear existing books
+
+      books.forEach(book => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${book.book_id}</td>
+          <td>${book.title}</td>
+          <td>${book.author}</td>
+          <td>${book.quantity}</td>
+        `;
+        booksTableBody.appendChild(row);
+      });
+    }
+
+    // Call the function to fetch and display books on page load
+    window.onload = fetchAvailableBooks;
+
+    // Add event listener for adding a new book
+    document.getElementById('add-book-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const bookid = document.getElementById('bookid').value;
+      const title = document.getElementById('title').value;
+      const author = document.getElementById('author').value;
+      const quantity = document.getElementById('quantity').value;
+      const coverpage = document.getElementById('coverpage').value;
+      const department = document.getElementById('department').value;
+      const token = localStorage.getItem('token');
+
+      const response = await fetch('http://localhost:3000/api/books/add-book', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          book_id: bookid,
+          title,
+          author,
+          quantity,
+          coverpage,
+          department
+        })
+      });
+
+      const msg = document.getElementById('message');
+      if (response.ok) {
+        msg.textContent = "✅ Book added successfully!";
+        msg.style.color = "green";
+        document.getElementById('add-book-form').reset();
+        
+        // Refresh the list of available books
+        fetchAvailableBooks();
+      } else {
+        const error = await response.json();
+        msg.textContent = `❌ ${error.message || 'Failed to add book.'}`;
+        msg.style.color = "red";
+      }
+    });
+  </script>
+
+</body>
+</html>

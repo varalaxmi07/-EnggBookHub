@@ -1,0 +1,280 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Engineering Library</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    /* ... previous CSS remains unchanged ... */
+    /* (You can keep the CSS I provided earlier as it is) */
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>EnggBookHub</h1>
+    <nav>
+   
+      <a href="login.html">Login</a>
+      <a href="signup.html">Signup</a>
+    </nav>
+  </header>
+
+ 
+    <style>
+      body {
+        margin: 0;
+        font-family: 'Inter', sans-serif;
+        background-color: #f9fafb;
+        color: #1f2937;
+      }
+ 
+      header {
+        background-color: #0f172a;
+        color: white;
+        padding: 20px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+ 
+      nav a {
+        color: white;
+        margin-left: 20px;
+        text-decoration: none;
+      }
+ 
+      nav a:hover {
+        text-decoration: underline;
+      }
+ 
+      .hero {
+        text-align: center;
+        background: linear-gradient(to right, #cbd5e1, #e2e8f0);
+        padding: 80px 20px;
+      }
+ 
+      .hero h1 {
+        font-size: 3rem;
+        margin-bottom: 15px;
+      }
+ 
+      .hero p {
+        font-size: 1.2rem;
+        margin-bottom: 30px;
+      }
+ 
+      .hero button {
+        background-color: #1e40af;
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        font-size: 1rem;
+        cursor: pointer;
+        border-radius: 6px;
+        margin: 5px;
+      }
+ 
+      .hero button:hover {
+        background-color: #1d4ed8;
+      }
+ 
+      .section {
+        padding: 60px 30px;
+        max-width: 1100px;
+        margin: auto;
+      }
+ 
+      .section h2 {
+        font-size: 2rem;
+        margin-bottom: 25px;
+        text-align: center;
+        color: #1e3a8a;
+      }
+ 
+      .subjects, .how-it-works, .testimonials {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+ 
+      .card {
+        background-color: #f3f4f6;
+        padding: 20px;
+        border-radius: 8px;
+        width: 220px;
+        text-align: center;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        transition: transform 0.2s;
+      }
+ 
+      .card:hover {
+        transform: translateY(-5px);
+      }
+ 
+      .about p {
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+        font-size: 1.1rem;
+        color: #374151;
+      }
+ 
+      .testimonial-card {
+        background-color: white;
+        border-left: 5px solid #1e40af;
+        padding: 20px;
+        width: 300px;
+        font-size: 0.95rem;
+      }
+ 
+      .testimonial-card span {
+        display: block;
+        margin-top: 10px;
+        font-weight: bold;
+        color: #1f2937;
+      }
+ 
+      .footer {
+        background-color: #0f172a;
+        color: white;
+        text-align: center;
+        padding: 20px;
+        margin-top: 60px;
+      }
+ 
+      .contact-info {
+        text-align: center;
+        margin-top: 40px;
+        font-size: 0.95rem;
+      }
+ 
+      .contact-info a {
+        color: #1e40af;
+        text-decoration: none;
+      }
+ 
+      .contact-info a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+ 
+   
+ 
+   
+      <section class="hero">
+        <h1>Welcome to Engineering Book Hub</h1>
+        <p>Your one-stop platform to borrow and return academic books for engineering students.</p>
+        <a href="login.html"><button>Borrow Book</button></a>
+        <a href="login.html"><button>Return Book</button></a>
+      </section>
+     
+ 
+    <section class="section about">
+      <h2>About Us</h2>
+      <p>
+        EnggBookHub is designed to help engineering students find the right textbooks and reference materials
+        for their curriculum. Whether it's semester books or preparation material, everything is just a click away.
+      </p>
+    </section>
+ 
+    <section class="section">
+      <h2>Choose Department</h2>
+      <div class="subjects">
+        <div class="card">Computer Science</div>
+        <div class="card">Electronics (ECE)</div>
+        <div class="card">Electrical (EEE)</div>
+        <div class="card">Mechanical</div>
+        <div class="card">Civil Engineering</div>
+        <div class="card">Information Technology</div>
+        <div class="card">AI & Data Science</div>
+      </div>
+    </section>
+ 
+    <section class="section">
+      <h2>How It Works?</h2>
+      <div class="how-it-works">
+        <div class="card">🔍 Search your book</div>
+        <div class="card">📘 Borrow with your ID</div>
+        <div class="card">✅ Return before due date</div>
+      </div>
+    </section>
+ 
+    <section class="section">
+      <h2>What Students Say</h2>
+      <div class="testimonials" id="testimonial-slider">
+        <div class="testimonial-card">
+          “Super easy to borrow my semester books. I got all my core subjects covered!”
+          <span>– Rahul, CSE</span>
+        </div>
+        <div class="testimonial-card">
+          “Returning was just as simple. Loved the interface and speed.”
+          <span>– Ananya, ECE</span>
+        </div>
+        <div class="testimonial-card">
+          “This is the best tool for last-minute semester prep. So handy!”
+          <span>– Sai, MECH</span>
+        </div>
+        <div class="testimonial-card">
+          “Loved the UI! Everything is smooth and fast.”
+          <span>– Keerthi, IT</span>
+        </div>
+        <div class="testimonial-card">
+          “Got my lab manuals here too. Saved me big time.”
+          <span>– Vinay, EEE</span>
+        </div>
+        <div class="testimonial-card">
+          “Books for all departments available in one place. Super useful.”
+          <span>– Deepika, CIVIL</span>
+        </div>
+        <div class="testimonial-card">
+          “I didn’t have to ask the library staff at all—just searched and borrowed.”
+          <span>– Arjun, AI & DS</span>
+        </div>
+      </div>
+    </section>
+   
+    <script>
+      const testimonials = document.querySelectorAll('.testimonial-card');
+      let currentIndex = 0;
+   
+      function showTestimonials() {
+        testimonials.forEach((card, index) => {
+          card.style.display = (index === currentIndex || index === currentIndex + 1) ? 'block' : 'none';
+        });
+   
+        currentIndex += 2;
+        if (currentIndex >= testimonials.length) {
+          currentIndex = 0;
+        }
+      }
+   
+      showTestimonials(); // Initial load
+      setInterval(showTestimonials, 3000); // Rotate every 3 seconds
+    </script>
+   
+   
+   
+ 
+    <section class="contact-info">
+      <p><strong>Contact Us:</strong> library@cvr.ac.in</p>
+    </section>
+ 
+    <footer class="footer">
+      &copy; 2025 EnggBookHub. All rights reserved.
+    </footer>
+ 
+  </body>
+  </html>
+ 
+  <!-- ... rest of the content (about, subjects, how it works, etc.) remains unchanged ... -->
+
+</body>
+</html>
+
+

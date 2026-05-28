@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Return Books</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f7fa;
+      padding: 40px;
+    }
+
+    h2 {
+      color: #0e2f44;
+      text-align: center;
+    }
+
+    .return-form {
+      background: white;
+      max-width: 500px;
+      margin: auto;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .return-form label {
+      display: block;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    .return-form input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+
+    .return-form button {
+      margin-top: 25px;
+      padding: 12px;
+      width: 100%;
+      background-color: #0e2f44;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    .return-form button:hover {
+      background-color: #0056b3;
+    }
+
+    .message {
+      margin-top: 20px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .success {
+      color: green;
+    }
+
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <h2> Return Book</h2>
+
+  <div class="return-form">
+    <label for="userId">User ID</label>
+    <input type="text" id="userId" placeholder="Enter user ID" required />
+
+    <label for="bookId">Book ID</label>
+    <input type="text" id="bookId" placeholder="Enter book ID" required />
+
+    <button onclick="returnBook()">Return Book</button>
+
+    <div class="message" id="message"></div>
+  </div>
+
+  <script>
+    function returnBook() {
+      const userId = document.getElementById("userId").value.trim();
+      const bookId = document.getElementById("bookId").value.trim();
+      const messageEl = document.getElementById("message");
+
+      if (!userId || !bookId) {
+        messageEl.textContent = "Please fill in all fields.";
+        messageEl.className = "message error";
+        return;
+      }
+
+      // Call backend API
+      fetch('http://localhost:3000/api/admin/return-book', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId, bookId })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          messageEl.textContent = "✅ Book returned successfully!";
+          messageEl.className = "message success";
+        } else {
+          messageEl.textContent = "⚠️ " + data.message;
+          messageEl.className = "message error";
+        }
+      })
+      .catch(err => {
+        messageEl.textContent = "Server error. Please try again.";
+        messageEl.className = "message error";
+      });
+    }
+  </script>
+
+</body>
+</html>
+
+

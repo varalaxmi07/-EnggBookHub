@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EnggBookHub - Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --blue: #06318c;
+      --light-gray: #070707;
+      --dark-gray: #1f2937;
+      --border: #e5e7eb;
+    }
+    header {
+      color: white;
+    }
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: white;
+      color: var(--dark-gray);
+      margin: 0;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: #0f172a;
+      border-bottom: 1px solid var(--border);
+    }
+    header h1 {
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+    .search-bar-container {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 0 2rem;
+    }
+    .search-bar input {
+      width: 300px;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+    .dept-select select {
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+    }
+    nav {
+      display: flex;
+      padding: 0.5rem 2rem;
+      background-color: #ffffff;
+      border-bottom: 1px solid var(--border);
+      gap: 1rem;
+    }
+    nav a {
+      text-decoration: none;
+      color: var(--dark-gray);
+      font-weight: 500;
+      padding: 0.5rem;
+      cursor: pointer;
+    }
+    nav a:hover {
+      color: var(--blue);
+    }
+    main {
+      padding: 2rem;
+      max-width: 1000px;
+      margin: auto;
+    }
+    .section {
+      margin-bottom: 2rem;
+    }
+    .section h2 {
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+      color: var(--blue);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 1.5rem;
+    }
+    .card {
+  background: white;
+  border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+.card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+    .card h3 {
+      font-size: 1rem;
+      margin: 0.5rem 0 0.25rem;
+    }
+    .card p {
+      font-size: 0.875rem;
+      color: #e8ecf5;
+      margin: 0;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background-color: var(--light-gray);
+      font-size: 0.9rem;
+      color: #fafbfd;
+      border-top: 1px solid var(--border);
+    }
+    .hidden {
+      display: none;
+    }
+   
+  </style>
+</head>
+<body>
+  <header>
+    <h1>EnggBookHub</h1>
+    
+    
+    <div style="display: flex; align-items: center; gap: 1.5rem;">
+      <div id="welcome-user">Welcome, Student</div>
+      <div class="logout">
+        <p style="margin: 0;"><a href="login.html" onclick="logout()" style="color: white; text-decoration: none;">Logout</a></p>
+      </div>
+    </div>
+  </header>
+
+  <nav>
+    <a onclick="showSection('dashboard')">Dashboard</a>
+    <a onclick="showSection('borrowed')">My Books</a>
+  </nav>
+
+  <main>
+    <section id="dashboard" class="section">
+      <div class="search-bar-container">
+        <div class="search-bar">
+          <input type="text" placeholder="Search books by title, bookid, or subject...">
+        </div>
+        <div class="dept-select">
+          <select>
+            <option value="">Choose Department</option>
+            <option value="Computer Science">Computer Science</option>
+            <option value="Electronics">Electronics</option>
+            <option value="Mechanical">Mechanical</option>
+            <option value="Civil">Civil</option>
+            <option value="Electrical">Electrical</option>
+            <option value="AI & DS">AI & DS</option>
+          </select>
+        </div>
+      </div>
+      
+      <h2>Recommended Books</h2>
+      <div class="grid" style="display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); padding: 1rem;"></div>
+    </section>
+
+    <section id="borrowed" class="section hidden">
+      <h2>My Borrowed Books</h2>
+      <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+          <tr style="background-color: #f3f4f6; text-align: left;">
+            <th style="padding: 12px; border: 1px solid #e5e7eb;">Book Id</th>
+            <th style="padding: 12px; border: 1px solid #e5e7eb;">Borrow Date</th>
+            <th style="padding: 12px; border: 1px solid #e5e7eb;">Due Date</th>
+            <th style="padding: 12px; border: 1px solid #e5e7eb;">Status</th>
+            <th>Overdue</th>
+
+          </tr>
+        </thead>
+        <tbody id="borrowed-books-table-body"></tbody>
+      </table>
+    </section>
+    
+
+    <!-- <section id="history" class="section hidden">
+      <table style="width:100%; border-collapse: collapse;">
+        <thead>
+          <tr style="background-color: #f3f4f6; text-align: left;">
+            <th style="padding: 12px; border: 1px solid #e5e7eb;">Book</th>
+            <th style="padding: 12px; border: 1px solid #e5e7eb;">Borrowed On</th>
+            <th style="padding: 12px; border: 1px solid #e5e7eb;">Due Date</th>
+            <th style="padding: 12px; border: 1px solid #e5e7eb;">Status</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </section> -->
+  </main>
+
+  <footer>
+    © 2025 LibHub. Inspired by Open Library & NDLI.
+  </footer>
+
+  <script>
+    async function fetchStudentDashboard() {
+      const token = localStorage.getItem('token');
+      const res = await fetch('http://localhost:3000/api/student/me', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (!res.ok) return console.error('Failed to fetch student info');
+      const data = await res.json();
+      document.getElementById('welcome-user').textContent = `Welcome, ${data.name}`;
+    }
+
+    async function fetchAvailableBooks() {
+      const res = await fetch('http://localhost:3000/api/books/available');
+      const books = await res.json();
+      renderBooks(books);
+    }
+
+    function renderBooks(books) {
+  const grid = document.querySelector('#dashboard .grid');
+  grid.innerHTML = ''; // Clear previous content
+  books.forEach(book => {
+    console.log(book);  // Check the book object to ensure it has an id field
+    if (!book.id) {
+      console.error('Book does not have an ID:', book);
+      return;
+    }
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `
+      <img src="${book.coverpage}" alt="Book Cover">
+      <h3>${book.title}</h3>
+      <p>${book.author}</p>
+      <p>${book.quantity > 0 ? 'Available' : 'Out of Stock'}</p>
+      ${book.quantity > 0 ? `<button onclick="borrowBook('${book.id}')" style="margin-top: 0.5rem; padding: 6px 12px; background-color: var(--blue); color: white; border: none; border-radius: 4px; cursor: pointer;">Borrow</button>` : ''}
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function borrowBook(bookId) {
+  console.log("Borrowing book with ID:", bookId);  // Check the value of bookId
+  if (!bookId) {
+    console.error("Invalid bookId:", bookId);
+    return;
+  }
+
+  const token = localStorage.getItem('token');
+  if (!token) {
+    alert("You're not logged in!");
+    return;
+  }
+
+  fetch('http://localhost:3000/api/books/borrow', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token,
+    },
+    body: JSON.stringify({ bookId })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.message) {
+      alert(data.message);
+      fetchBorrowedBooks();
+    } else {
+      alert("Something went wrong!");
+    }
+  })
+  .catch(error => {
+    console.error("❌ Error borrowing book:", error);
+    alert("Failed to borrow the book.");
+  });
+}
+
+
+  async function fetchBorrowedBooks() {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    console.error("No token found.");
+    return;
+  }
+
+  try {
+    const res = await fetch('http://localhost:3000/api/student/mybooks', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+
+    if (!res.ok) {
+      console.error("Failed to fetch borrowed books.");
+      return;
+    }
+
+    const books = await res.json();
+    console.log("📚 Borrowed books data:", books);
+    const tbody = document.getElementById('borrowed-books-table-body');
+    tbody.innerHTML = '';
+
+    books.forEach(book => {
+      const borrowDate = new Date(book.borrow_date).toLocaleString();
+      const dueDate = book.due_date ? new Date(book.due_date).toLocaleDateString() : '-';
+      const returnDate = book.return_date ? new Date(book.return_date).toLocaleDateString() : '-';
+      const isOverdue = book.due_date && !book.return_date && new Date(book.due_date) < new Date();
+const overdueStatus = isOverdue 
+  ? '<span style="color: red; font-weight: bold;">Overdue</span>' 
+  : '<span style="color: green;">On time</span>';
+      const row = `
+        <tr>
+          <td style="padding:12px; border:1px solid #e5e7eb;">${book.book_id}</td>
+          <td style="padding:12px; border:1px solid #e5e7eb;">${borrowDate}</td>
+          <td style="padding:12px; border:1px solid #e5e7eb;">${dueDate}</td>
+          <td style="padding:12px; border:1px solid #e5e7eb;">${book.status}</td>
+           <td style="padding:12px; border:1px solid #e5e7eb;">${overdueStatus}</td>
+        </tr>`;
+      tbody.innerHTML += row;
+    });
+  } catch (error) {
+    console.error("Error fetching borrowed books:", error);
+  }
+}
+
+
+    async function fetchHistory() {
+      const token = localStorage.getItem('token');
+      const res = await fetch('http://localhost:3000/api/student/history', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (!res.ok) {
+    console.error('Failed to fetch history');
+    return;
+  }
+      const history = await res.json();
+      const tbody = document.querySelector('#history tbody');
+      tbody.innerHTML = '';
+      history.forEach(row => {
+        tbody.innerHTML += `
+          <tr>
+            <td style="padding:12px; border:1px solid #e5e7eb;">${row.title}</td>
+            <td style="padding:12px; border:1px solid #e5e7eb;">${new Date(row.borrowed_on).toDateString()}</td>
+            <td style="padding:12px; border:1px solid #e5e7eb;">${new Date(row.due_date).toDateString()}</td>
+            <td style="padding:12px; border:1px solid #e5e7eb; color: ${row.status === 'Overdue' ? 'red' : 'green'};">
+              ${row.status}
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    function showSection(sectionId) {
+      const sections = document.querySelectorAll('main .section');
+      sections.forEach(section => section.classList.add('hidden'));
+      const target = document.getElementById(sectionId);
+      if (target) target.classList.remove('hidden');
+    }
+
+    document.querySelector('.dept-select select').addEventListener('change', async function () {
+      const dept = this.value;
+      if (!dept) return fetchAvailableBooks();
+      const res = await fetch(`http://localhost:3000/api/books/available?department=${dept}`);
+      const books = await res.json();
+      renderBooks(books);
+    });
+
+    document.querySelector('.search-bar input').addEventListener('input', async function () {
+      const query = this.value.trim();
+      const dept = document.querySelector('.dept-select select').value;
+
+      if (!query) {
+        if (dept) {
+          const token = localStorage.getItem('token');
+const res = await fetch(`http://localhost:3000/api/books/available?search=algorithm&department=${dept}`, {
+  headers: {
+    'Authorization': 'Bearer ' + token
+  }
+});
+          const books = await res.json();
+          renderBooks(books);
+        } else {
+          fetchAvailableBooks();
+        }
+        return;
+      }
+
+      try {
+        // const res = await fetch(`http://localhost:3000/api/books/search?query=${encodeURIComponent(query)}`);
+        // const dept = document.querySelector('.dept-select select').value;
+let searchUrl = `http://localhost:3000/api/books/search?query=${encodeURIComponent(query)}`;
+if (dept) {
+  searchUrl += `&department=${encodeURIComponent(dept)}`;
+}
+
+const token = localStorage.getItem('token');
+const res = await fetch(searchUrl, {
+  headers: {
+    'Authorization': 'Bearer ' + token
+  }
+});
+function logout() {
+  localStorage.removeItem('token');
+}
+
+
+        const books = await res.json();
+        renderBooks(books);
+      } catch (err) {
+        console.error('Search error:', err);
+      }
+    });
+
+    window.onload = () => {
+      console.log('Token:', localStorage.getItem('token'));
+      
+      fetchStudentDashboard();
+      fetchAvailableBooks();
+      fetchBorrowedBooks();
+      fetchHistory();
+    }
+  </script>
+</body>
+</html>  
