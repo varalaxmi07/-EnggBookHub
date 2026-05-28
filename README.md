@@ -8,7 +8,7 @@ EnggBookHub is a full-stack web application designed for engineering students to
 
 - **Frontend:** HTML5, CSS3, JavaScript (ES6, Fetch API)
 - **Backend:** Node.js, Express.js
-- **Database:** MySQL
+- **Database:** MySQL (Managed via MySQL Workbench)
 
 ---
 
@@ -65,7 +65,7 @@ Follow these directions to spin up the local service pipeline on your desktop:
 ### 1. Prerequisites
 Ensure your device has these runtimes ready:
 * **Node.js** (LTS build recommended)
-* **MySQL Server** (Deployed natively or via environments like XAMPP)
+* **MySQL Server & MySQL Workbench** 
 
 ### 2. Grab the Workspace
 ```bash
@@ -78,8 +78,8 @@ Create a file named `.env` directly in your `backend/` directory to configure ru
 ```text
 PORT=5000
 DB_HOST=localhost
-DB_USER=your_mysql_username
-DB_PASSWORD=your_mysql_password
+DB_USER=your_workbench_username
+DB_PASSWORD=your_workbench_password
 DB_NAME=your_database_name
 JWT_SECRET=your_jwt_signing_token
 ```
@@ -91,12 +91,17 @@ cd backend
 npm install
 ```
 
-### 5. Start the Engine
+### 5. Initialize the Database using MySQL Workbench
+1. Launch **MySQL Workbench** and connect to your local instance.
+2. Open a new SQL tab and create your library database schema.
+3. Run your table definition scripts (`CREATE TABLE` commands) for users, books, and transactions.
+
+### 6. Start the Engine
 Kick off the Node backend pipeline:
 ```bash
 node index.js
 ```
 The server listener will initialize on port `5000`.
 
-### 6. Interact with the Client
+### 7. Interact with the Client
 Navigate into your local `frontend/` folder using your system file manager and double-click **`home.html`** to run the interface locally within any standard web browser.
